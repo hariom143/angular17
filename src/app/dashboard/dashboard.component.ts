@@ -7,7 +7,7 @@ import { AuthService } from '../core/auth/services/auth.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  //styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
 constructor(private authService: AuthService, private router: Router) {}

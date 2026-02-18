@@ -11,7 +11,7 @@ export class AuthService {
     return typeof window !== 'undefined' && !!window.localStorage;
   }
   login(username: string, password: string): boolean {
-    if (username === 'admin' && password === '1234') {
+    if (username === 'admin' && password === '123456') {
       if (this.isBrowser()) {
         localStorage.setItem(this.storageKey, 'true');
       }

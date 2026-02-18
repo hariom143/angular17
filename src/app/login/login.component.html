@@ -1,16 +1,32 @@
 <app-loader></app-loader>
 <div class="login-container">
       <h2>Login</h2>
-      <form (ngSubmit)="login()">
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" novalidate>
         <div>
           <label for="username">Username:</label>
-          <input id="username" type="text" [(ngModel)]="username" name="username" required />
+          <input id="username" type="text" [(ngModel)]="username" name="username" required #usernameCtrl="ngModel" minlength="3" />
+              <ng-container *ngIf="usernameCtrl.touched && usernameCtrl.invalid">
+                <small class="error" *ngIf="usernameCtrl.errors?.['required']">
+                  Username is required
+                </small>
+                <small class="error" *ngIf="usernameCtrl.errors?.['minlength']">
+                  Minimum 3 characters
+                </small>
+              </ng-container>
         </div>
         <div>
           <label for="password">Password:</label>
-          <input id="password" type="password" [(ngModel)]="password" name="password" required />
+          <input id="password" type="password" [(ngModel)]="password" name="password" required  [(ngModel)]="password" #passwordCtrl="ngModel" minlength="6"/>
+          <ng-container *ngIf="passwordCtrl.touched && passwordCtrl.invalid">
+            <small class="error" *ngIf="passwordCtrl.errors?.['required']">
+              Password is required
+            </small>
+            <small class="error" *ngIf="passwordCtrl.errors?.['minlength']">
+              Minimum 6 characters
+            </small>
+          </ng-container>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" [disabled]="loginForm.invalid">{{ 'Login' }}</button>
       </form>
-      <p *ngIf="message">{{ message }}</p>
+      <div *ngIf="message" class="error">{{ message }}</div>
     </div>

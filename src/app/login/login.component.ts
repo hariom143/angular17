@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // ✅ import CommonModule for *ngIf
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth/services/auth.service';
 import { LoaderService } from '../core/loader/loader.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, LoaderComponent], // ✅ include CommonModule
+  imports: [FormsModule, CommonModule, LoaderComponent, ReactiveFormsModule ], // ✅ include CommonModule
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -16,14 +17,18 @@ export class LoginComponent implements OnInit {
   username = '';
   password = '';
   message = '';
-  private storage: { [key: string]: string } = {};
   constructor(
     private router: Router,
     private authService: AuthService,
-    private loader: LoaderService
+    public loader: LoaderService
 ) {}
-  login() { 
+   login(form: NgForm) {
     this.loader.show(); // show loader
+    if (form.invalid) {
+      form.form.markAllAsTouched(); // show all validation errors
+       return;
+    }
+    
   setTimeout(() => {
     if (this.authService.login(this.username, this.password)) {
       this.router.navigate(['/dashboard']);
